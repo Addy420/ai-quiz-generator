@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .question { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Generated Quiz</h1>
+    <a href="/">← Upload New File</a>
+    
+    <div id="quiz">
+        {% for line in quiz %}
+            <div class="question">
+                {% if line.startswith('Correct:') %}
+                    <p style="color: green;">{{ line }}</p>
+                {% else %}
+                    <p>{{ line }}</p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <h2>Recommendations</h2>
+    <div id="recommendations">
+        <!-- Will be added later -->
+        <p>Recommendations based on performance will appear here</p>
+    </div>
+</body>
+</html>
