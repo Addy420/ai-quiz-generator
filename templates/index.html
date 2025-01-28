@@ -4,17 +4,92 @@
     <title>AI Quiz Generator</title>
     <style>
         body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        .upload-box { border: 2px dashed #ccc; padding: 30px; text-align: center; margin: 20px 0; }
+        .upload-box { 
+            border: 2px dashed #ccc; 
+            padding: 30px; 
+            text-align: center; 
+            margin: 20px 0;
+            transition: border-color 0.3s ease;
+        }
+        .upload-box.dragover {
+            border-color: #2196F3;
+            background-color: #f5fbff;
+        }
+        #file-input { display: none; }
+        .file-name { margin-top: 10px; color: #666; }
     </style>
 </head>
 <body>
     <h1>Upload Lecture Material</h1>
     <form method="post" enctype="multipart/form-data">
-        <div class="upload-box">
-            <input type="file" name="file" accept=".pdf,.pptx">
-            <p>Drag and drop or click to upload PDF/PPT</p>
+        <div class="upload-box" id="drop-zone">
+            <input type="file" name="file" id="file-input" accept=".pdf,.pptx">
+            <label for="file-input" id="file-label">
+                <p>Drag and drop or click to upload PDF/PPT</p>
+            </label>
+            <div class="file-name" id="file-name"></div>
         </div>
         <button type="submit">Generate Quiz</button>
     </form>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const fileName = document.getElementById('file-name');
+
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Highlight drop zone when item is dragged over it
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            dropZone.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            dropZone.classList.remove('dragover');
+        }
+
+        // Handle dropped files
+        dropZone.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        // Handle file selection via click
+        fileInput.addEventListener('change', function(e) {
+            handleFiles(this.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+                // Update file name display
+                fileName.textContent = `Selected file: ${file.name}`;
+                // Update the actual file input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                fileInput.files = dataTransfer.files;
+            }
+        }
+    </script>
 </body>
 </html>
