@@ -1,0 +1,11 @@
+.venv/       # Ignore the virtual environment
+__pycache__/  # Ignore Python cache files
+*.pyc        # Ignore compiled Python files
+.env         # Ignore environment variables file (VERY IMPORTANT!)
+uploads/     # Ignore the uploads directory (if you don't want to store uploaded files in Git)
+*.DS_Store   # Ignore macOS specific files
+.idea/        # Ignore IntelliJ IDEA project files
+.vscode/      # Ignore VS Code project files
+node_modules/ # Ignore Node.js dependencies (if applicable)
+*.log        # Ignore log files
+*.tmp        # Ignore temporary files
